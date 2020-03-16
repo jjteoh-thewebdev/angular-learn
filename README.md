@@ -1,6 +1,10 @@
-# HelloWorld
+# AngularLearn
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.0.6.
+
+## Description
+
+This is a project from code with mosh angular series, it is meant for academic purpose only.
 
 ## Development server
 
