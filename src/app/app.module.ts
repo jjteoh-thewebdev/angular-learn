@@ -35,7 +35,7 @@ import { LoginComponent } from './login/login.component';
   imports: [
     BrowserModule,
     // initialise firebase base on config on environment
-    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireModule.initializeApp(environment),
     AngularFireDatabaseModule,
     AngularFireAuthModule,
     // directives for bootstrap
