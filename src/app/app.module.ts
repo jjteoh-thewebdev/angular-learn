@@ -18,6 +18,10 @@ import { MyOrdersComponent } from './my-orders/my-orders.component';
 import { AdminProductsComponent } from './admin/admin-products/admin-products.component';
 import { AdminOrdersComponent } from './admin/admin-orders/admin-orders.component';
 import { LoginComponent } from './login/login.component';
+import { AuthService } from './auth.service'
+import { AuthGuardService } from './auth-guard.service';
+import { UserService } from './user.service';
+import { AdminAuthGuardService } from './admin-auth-guard.service';
 
 @NgModule({
   declarations: [
@@ -35,7 +39,7 @@ import { LoginComponent } from './login/login.component';
   imports: [
     BrowserModule,
     // initialise firebase base on config on environment
-    AngularFireModule.initializeApp(environment),
+    AngularFireModule.initializeApp(environment.firebase),
     AngularFireDatabaseModule,
     AngularFireAuthModule,
     // directives for bootstrap
@@ -44,17 +48,31 @@ import { LoginComponent } from './login/login.component';
     // define our routes
     RouterModule.forRoot([
       { path: '', component: HomeComponent },
+      { path: 'home', component: HomeComponent },
+      { path: 'login', component: LoginComponent},
+
       { path: 'products', component: ProductsComponent },
       { path: 'shopping-cart', component: ShoppingCartComponent },
-      { path: 'check-out', component: CheckOutComponent },
-      { path: 'my/orders', component: MyOrdersComponent},
-      { path: 'order-success', component: OrderSuccessComponent },
-      { path: 'login', component: LoginComponent},
-      { path: 'admin/products', component: AdminProductsComponent},
-      { path: 'admin/orders', component: AdminOrdersComponent},
+      { path: 'check-out', component: CheckOutComponent, canActivate: [AuthGuardService] },
+      { path: 'my/orders', component: MyOrdersComponent, canActivate: [AuthGuardService]},
+      { path: 'order-success', component: OrderSuccessComponent, canActivate: [AuthGuardService] },
+
+      { 
+        path: 'admin/products', 
+        component: AdminProductsComponent, 
+        canActivate: [AuthGuardService, AdminAuthGuardService]},
+      { 
+        path: 'admin/orders', 
+        component: AdminOrdersComponent, 
+        canActivate: [AuthGuardService, AdminAuthGuardService]},
     ])
   ],
-  providers: [],
+  providers: [
+    AuthService, 
+    AuthGuardService,
+    AdminAuthGuardService,
+    UserService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
