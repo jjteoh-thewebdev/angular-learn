@@ -6,6 +6,8 @@ import { AngularFireDatabaseModule } from '@angular/fire/database';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { RouterModule } from '@angular/router';
 import { NgbModule, NgbDropdownModule  } from '@ng-bootstrap/ng-bootstrap';
+import { CustomFormsModule } from 'ngx-custom-validators';
+
 
 import { AppComponent } from './app.component';
 import { BsNavbarComponent } from './bs-navbar/bs-navbar.component';
@@ -22,6 +24,10 @@ import { AuthService } from './services/auth/auth.service'
 import { AuthGuardService } from './services/auth/auth-guard.service';
 import { UserService } from './services/user/user.service';
 import { AdminAuthGuardService } from './services/auth/admin-auth-guard.service';
+import { ProductFormComponent } from './admin/product-form/product-form.component';
+import { CategoryService } from './services/category/category.service';
+import { FormsModule } from '@angular/forms';
+import { ProductService } from './services/product/product.service';
 
 @NgModule({
   declarations: [
@@ -34,9 +40,12 @@ import { AdminAuthGuardService } from './services/auth/admin-auth-guard.service'
     OrderSuccessComponent,
     MyOrdersComponent,
     AdminProductsComponent,
-    AdminOrdersComponent
+    AdminOrdersComponent,
+    ProductFormComponent
   ],
   imports: [
+    FormsModule,
+    CustomFormsModule,
     BrowserModule,
     // initialise firebase base on config on environment
     AngularFireModule.initializeApp(environment.firebase),
@@ -60,18 +69,27 @@ import { AdminAuthGuardService } from './services/auth/admin-auth-guard.service'
       { 
         path: 'admin/products', 
         component: AdminProductsComponent, 
-        canActivate: [AuthGuardService, AdminAuthGuardService]},
+        canActivate: [AuthGuardService, AdminAuthGuardService]
+      },
+      { 
+        path: 'admin/products/new', 
+        component: ProductFormComponent, 
+        canActivate: [AuthGuardService, AdminAuthGuardService]
+      },
       { 
         path: 'admin/orders', 
         component: AdminOrdersComponent, 
-        canActivate: [AuthGuardService, AdminAuthGuardService]},
+        canActivate: [AuthGuardService, AdminAuthGuardService]
+      },
     ])
   ],
   providers: [
     AuthService, 
     AuthGuardService,
     AdminAuthGuardService,
-    UserService
+    UserService,
+    CategoryService,
+    ProductService
   ],
   bootstrap: [AppComponent]
 })
