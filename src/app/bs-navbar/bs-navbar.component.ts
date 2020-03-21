@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs';
 import { Component } from '@angular/core';
-import { AuthService } from '../auth.service';
+import { AuthService } from '../services/auth/auth.service';
 import * as firebase from 'firebase';
 import { Router } from '@angular/router';
 import { AppUser } from '../models/app-user';

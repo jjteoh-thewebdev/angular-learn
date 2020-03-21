@@ -18,10 +18,10 @@ import { MyOrdersComponent } from './my-orders/my-orders.component';
 import { AdminProductsComponent } from './admin/admin-products/admin-products.component';
 import { AdminOrdersComponent } from './admin/admin-orders/admin-orders.component';
 import { LoginComponent } from './login/login.component';
-import { AuthService } from './auth.service'
-import { AuthGuardService } from './auth-guard.service';
-import { UserService } from './user.service';
-import { AdminAuthGuardService } from './admin-auth-guard.service';
+import { AuthService } from './services/auth/auth.service'
+import { AuthGuardService } from './services/auth/auth-guard.service';
+import { UserService } from './services/user/user.service';
+import { AdminAuthGuardService } from './services/auth/admin-auth-guard.service';
 
 @NgModule({
   declarations: [
