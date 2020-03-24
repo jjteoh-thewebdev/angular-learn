@@ -14,7 +14,7 @@ export class AdminProductsComponent implements OnInit, OnDestroy {
   filteredProducts: AppProduct[];
   subscription: Subscription;
   dtOptions: DataTables.Settings = {};
-  dtTrigger: Subject = new Subject();
+  dtTrigger = new Subject();
 
 
   constructor(private productService: ProductService) {
