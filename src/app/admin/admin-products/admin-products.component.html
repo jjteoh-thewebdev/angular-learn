@@ -2,8 +2,14 @@
 <p>
     <a routerLink="/admin/products/new" class="btn btn-primary">New Product</a>
 </p>
+<p>
+    <input 
+    #query
+    (keyup)="filter(query.value)"
+    type="text" class="form-control" placeholder="Search...">
+</p>
 
-<table class="table">
+<table class="table" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
     <thead>
         <tr>
             <th>Title</th>
@@ -11,8 +17,8 @@
             <th></th>
         </tr>
     </thead>
-    <tbody>
-        <tr *ngFor="let p of products$ | async">
+    <tbody *ngIf="filteredProducts?.length!= 0">
+        <tr *ngFor="let p of filteredProducts">
             <td>{{ p.title }}</td>
             <td>{{ p.price }}</td>
             <td>
@@ -20,4 +26,9 @@
             </td>
         </tr>
     </tbody>
+    <!-- <tbody *ngIf="filteredProducts?.length == 0">
+        <tr>
+          <td colspan="3" class="no-data-available">No data!</td>
+        </tr>
+    <tbody> -->
 </table>
