@@ -28,6 +28,8 @@ import { ProductFormComponent } from './admin/product-form/product-form.componen
 import { CategoryService } from './services/category/category.service';
 import { FormsModule } from '@angular/forms';
 import { ProductService } from './services/product/product.service';
+import { ProductFilterComponent } from './products/product-filter/product-filter.component';
+import { ProductCardComponent } from './product-card/product-card.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +43,9 @@ import { ProductService } from './services/product/product.service';
     MyOrdersComponent,
     AdminProductsComponent,
     AdminOrdersComponent,
-    ProductFormComponent
+    ProductFormComponent,
+    ProductFilterComponent,
+    ProductCardComponent
   ],
   imports: [
     FormsModule,
@@ -58,7 +62,7 @@ import { ProductService } from './services/product/product.service';
     DataTablesModule,
     // define our routes
     RouterModule.forRoot([
-      { path: '', component: HomeComponent },
+      { path: '', component: ProductsComponent },
       { path: 'home', component: HomeComponent },
       { path: 'login', component: LoginComponent},
 
