@@ -7,7 +7,12 @@
     <div class="collapse navbar-collapse" [ngbCollapse]="isMenuCollapsed" id="navbarsExampleDefault">
         <ul class="navbar-nav mr-auto">
         <li class="nav-item">
-            <a class="nav-link" routerLink="/shopping-cart" (click)="isMenuCollapsed = true">Shopping Cart</a>
+            <a class="nav-link" routerLink="/shopping-cart" (click)="isMenuCollapsed = true">
+                Shopping Cart
+                <span *ngIf="cart$ | async as cart" class="badge badge-warning badge-pill">
+                    {{ cart.totalItemsCount }}
+                </span>
+            </a>
         </li>
         <ng-template #anonymousUser>
             <li class="nav-item">
