@@ -23,18 +23,6 @@ export class AppComponent {
      returnUrl = returnUrl == "null"?  '' : returnUrl;
      localStorage.removeItem('returnUrl');
      router.navigateByUrl(returnUrl);
-
-      // if(user){
-      //   // we save everytimes login because its login using google
-      //   // user may change his/her displayname on google
-      //   userService.save(user);
-
-      //   let returnUrl = localStorage.getItem('returnUrl');
-      //   if(!returnUrl || returnUrl == "null")
-      //     returnUrl = 'home';
-
-      //   router.navigateByUrl(returnUrl);
-      // }
     });
   }
 }

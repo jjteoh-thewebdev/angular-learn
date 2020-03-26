@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { AppProduct } from '../models/app-product';
 import { Subscription } from 'rxjs';
 import { switchMap  } from 'rxjs/operators';
+import { ShoppingCartService } from '../services/shopping-cart/shopping-cart.service';
 
 @Component({
   selector: 'app-products',
@@ -14,13 +15,16 @@ export class ProductsComponent implements OnInit, OnDestroy {
   products: AppProduct[] = [];
   filteredProducts: AppProduct[] = [];
   category: string;
-  subscription: Subscription;
+  productSubscription: Subscription;
+  cartSubscription: Subscription;
+  cart: any;
 
   constructor(
     private route: ActivatedRoute,
-    private productService: ProductService
+    private productService: ProductService,
+    private cartService: ShoppingCartService
     ) { 
-    this.subscription = this.productService
+    this.productSubscription = this.productService
     .getAll()
     .pipe(
       // use switchMap to solve timing issue,
@@ -28,7 +32,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
       // then we return queryparams to filter
       switchMap(products => {
         this.products = products;
-        return route.queryParamMap;
+      return route.queryParamMap;
       })
     ).subscribe(params => {
       this.category = params.get('category');
@@ -38,11 +42,13 @@ export class ProductsComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnInit(){
+  async ngOnInit(){
+    this.cartSubscription = (await this.cartService.getCart()).subscribe(cart => this.cart = cart);
   }
 
   ngOnDestroy(){
-    this.subscription.unsubscribe();
+    this.productSubscription.unsubscribe();
+    this.cartSubscription.unsubscribe();
   }
 
 

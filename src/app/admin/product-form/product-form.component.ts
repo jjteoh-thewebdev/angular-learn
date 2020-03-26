@@ -13,7 +13,7 @@ import { AppProduct } from 'src/app/models/app-product';
 })
 export class ProductFormComponent implements OnInit {
   categories$: Observable<any>;
-  product:AppProduct = {title: "", price: 0, category: "", imageUrl: ""};
+  product:AppProduct;
   id;
 
   constructor(
@@ -21,16 +21,15 @@ export class ProductFormComponent implements OnInit {
     private route: ActivatedRoute,
     private categoryService: CategoryService, 
     private productService: ProductService) {
-    this.categories$ = this.categoryService.getAll();
-  
+      this.categories$ = this.categoryService.getAll();
+      this.product = {key: "", title: "", price: 0, category: "", imageUrl: ""};
+  }
+
+  ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id');
     if(this.id){
       this.productService.get(this.id).pipe(take(1)).subscribe((p:AppProduct) => this.product = p);
     }
-  }
-
-  ngOnInit(): void {
-    
   }
 
   save(product){
