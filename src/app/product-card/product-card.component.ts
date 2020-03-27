@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { AppProduct } from '../models/app-product';
 import { ShoppingCartService } from '../services/shopping-cart/shopping-cart.service';
 import { isNgTemplate } from '@angular/compiler';
+import { AppCart } from '../models/app-cart';
 
 @Component({
   selector: 'product-card',
@@ -11,22 +12,17 @@ import { isNgTemplate } from '@angular/compiler';
 export class ProductCardComponent{
   @Input('product') product;
   @Input('show-actions') showActions = true;
-  @Input('shopping-cart') shoppingCart;
+  @Input('shopping-cart') cart: AppCart;
 
-  constructor(private cartService: ShoppingCartService) { }
+  constructor(private cartService: ShoppingCartService) {
+   }
+
+   getQuantity(){
+     return this.cart.getQuantity(this.product);
+   }
 
   addToCart(){
     this.cartService.addToCart(this.product);
   }
 
-  removeFromCart(){
-    this.cartService.removeFromCart(this.product);
-  }
-
-  getQuantity(){
-    if(!this.shoppingCart) return 0;
-
-    let item = this.shoppingCart.items[this.product.key];
-    return item ? item.quantity : 0;
-  }
 }

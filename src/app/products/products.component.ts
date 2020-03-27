@@ -3,8 +3,9 @@ import { ProductService } from '../services/product/product.service';
 import { ActivatedRoute } from '@angular/router';
 import { AppProduct } from '../models/app-product';
 import { Subscription } from 'rxjs';
-import { switchMap  } from 'rxjs/operators';
+import { switchMap, map  } from 'rxjs/operators';
 import { ShoppingCartService } from '../services/shopping-cart/shopping-cart.service';
+import { AppCart } from '../models/app-cart';
 
 @Component({
   selector: 'app-products',
@@ -17,13 +18,35 @@ export class ProductsComponent implements OnInit, OnDestroy {
   category: string;
   productSubscription: Subscription;
   cartSubscription: Subscription;
-  cart: any;
+  cart: AppCart;
 
   constructor(
     private route: ActivatedRoute,
     private productService: ProductService,
     private cartService: ShoppingCartService
     ) { 
+  }
+
+  async ngOnInit(){
+    this.populateProduct();
+
+    this.cartSubscription = (await this.cartService.getCart()).pipe(
+        map((x:any) => { return new AppCart(x.items); })
+      ).subscribe((cart:AppCart) => this.cart = cart);
+  }
+
+  ngOnDestroy(){
+    this.productSubscription.unsubscribe();
+    this.cartSubscription.unsubscribe();
+  }
+
+  private applyFilter(){
+    this.filteredProducts = (this.category) ? 
+    this.products.filter(p => p.category.toLowerCase() === this.category.toLowerCase()) : 
+    this.products;
+  }
+
+  private populateProduct(){
     this.productSubscription = this.productService
     .getAll()
     .pipe(
@@ -32,23 +55,12 @@ export class ProductsComponent implements OnInit, OnDestroy {
       // then we return queryparams to filter
       switchMap(products => {
         this.products = products;
-      return route.queryParamMap;
+      return this.route.queryParamMap;
       })
     ).subscribe(params => {
       this.category = params.get('category');
-      this.filteredProducts = (this.category) ? 
-        this.products.filter(p => p.category.toLowerCase() === this.category.toLowerCase()) : 
-        this.products;
+      this.applyFilter();
     });
-  }
-
-  async ngOnInit(){
-    this.cartSubscription = (await this.cartService.getCart()).subscribe(cart => this.cart = cart);
-  }
-
-  ngOnDestroy(){
-    this.productSubscription.unsubscribe();
-    this.cartSubscription.unsubscribe();
   }
 
 
